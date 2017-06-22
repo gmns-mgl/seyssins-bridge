@@ -1,0 +1,26 @@
+/*
+ * Global application theme.
+ * Framework overrides and customization goes here.
+ */
+.padding-top {
+  padding-top: $navbar-padding-y;
+}
+.margin-top {
+  margin-top: $navbar-padding-y;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.card-date {
+  color: $gray-light;
+  display: block;
+  font-style: italic;
+  text-align: end;
+}
+
+button {
+  cursor: pointer;
+}

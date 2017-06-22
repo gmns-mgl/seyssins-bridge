@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <h1 class="title">
+    <span translate>Actualités</span>
+  </h1>
+  <span>Pour recevoir ces informations par mail, inscrivez-vous&nbsp;!</span>
+  <form>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Votre email">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button">S'inscrire</button>
+      </span>
+    </div>
+  </form>
+  <div class="card margin-top" *ngFor='let actuality of actualities'>
+    <img class="card-img-top" *ngIf="actuality.pictureUrl" src="actuality.pictureUrl" aria-hidden="true">
+    <div class="card-block">
+      <h4 class="card-title" [style.color]="actuality.titleColor">{{actuality.title}}</h4>
+      <span class="card-date">{{actuality.creationDate | date}}</span>
+      <p class="card-text">{{actuality.message}}</p>
+    </div>
+  </div>
+</div>

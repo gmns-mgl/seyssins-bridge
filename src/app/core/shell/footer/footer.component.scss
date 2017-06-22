@@ -1,0 +1,21 @@
+@import "src/theme/theme-variables";
+
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: $brand-primary;
+  color: $white;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  .nav-item {
+    cursor: pointer;
+  }
+  .navbar-toggler {
+    cursor: pointer;
+    &:focus, &:hover {
+      outline: none;
+    }
+  }
+}

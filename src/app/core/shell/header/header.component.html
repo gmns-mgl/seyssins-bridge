@@ -1,0 +1,33 @@
+<header>
+  <div class="hidden-xs-down">
+    <a href="app-home" translate><img src="assets/logo.png" class="logo-image"/></a>
+    <div class="banner-image"></div>
+    <span style="position: absolute; top: 100px; color: white; font-size: 30px; left:210px">Seyssins Bridge Club</span>
+  </div>
+  <div class="hidden-sm-up">
+    <nav class="navbar">
+      <button class="navbar-toggler navbar-toggler-left" type="button" aria-controls="navbar-menu"
+              aria-label="Toggle navigation" (click)="toggleMenu()" [attr.aria-expanded]="!menuHidden">
+        <i class="navbar-toggler-icon fa fa-bars"
+           style="display: flex; align-items: center; justify-content: center; color: #fff"></i>
+      </button>
+      <a class="navbar-brand" style="margin-left:60px" translate>Seyssins Bridge Club</a>
+      <div id="navbar-menu" class="collapse navbar-collapse float-xs-none" [ngbCollapse]="menuHidden">
+        <div class="navbar-nav">
+          <div class="nav-item nav-link text-uppercase" routerLink="/actuality" routerLinkActive="active">
+            <span translate>Actualités</span>
+          </div>
+          <div class="nav-item nav-link text-uppercase" routerLink="/competition" routerLinkActive="active">
+            <span translate>Compétitions</span>
+          </div>
+          <div class="nav-item nav-link text-uppercase" routerLink="/clublife" routerLinkActive="active">
+            <span translate>Vie du club</span>
+          </div>
+          <div class="nav-item nav-link text-uppercase" routerLink="/contact" routerLinkActive="active">
+            <span translate>Contact</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>

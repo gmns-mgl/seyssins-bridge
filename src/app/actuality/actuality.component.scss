@@ -1,0 +1,9 @@
+@import "src/theme/theme-variables";
+
+.btn-secondary {
+  background-color: $brand-primary;
+  color: $white;
+  &:hover {
+    background-color: darken($brand-primary, 5);
+  }
+}

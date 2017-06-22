@@ -1,0 +1,27 @@
+@import "src/theme/theme-variables";
+
+.logo-image {
+  width: 200px;
+  height: 200px;
+}
+
+.banner-image {
+  height: 200px;
+  width: calc(100% - 200px);
+  float: right;
+  background: url("../../../../assets/banner2.jpg") no-repeat fixed center;
+}
+
+.navbar {
+  background-color: $brand-primary;
+  color: $white;
+  .nav-item {
+    cursor: pointer;
+  }
+  .navbar-toggler {
+    cursor: pointer;
+    &:focus, &:hover {
+      outline: none;
+    }
+  }
+}

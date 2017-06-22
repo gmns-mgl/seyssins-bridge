@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div class="hidden-xs-down menu-left padding-top">
+  <div class="menu-item full-width" routerLink="/actuality" routerLinkActive="active">
+    <span translate>Actualités</span>
+  </div>
+  <div class="menu-item full-width" routerLink="/competition" routerLinkActive="active">
+    <span translate>Compétitions</span>
+  </div>
+  <div class="menu-item full-width" routerLink="/clublife" routerLinkActive="active">
+    <span translate>Vie du club</span>
+  </div>
+  <div class="menu-item full-width" routerLink="/contact" routerLinkActive="active">
+    <span translate>Contact</span>
+  </div>
+</div>
+<div class="content padding-top">
+  <router-outlet></router-outlet>
+</div>
+<app-footer></app-footer>
