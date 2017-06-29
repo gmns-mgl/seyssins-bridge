@@ -1,26 +1,22 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
 import { SharedModule } from '../shared/shared.module';
-import { HomeComponent } from './actuality.component';
-import { QuoteService } from './actuality.service';
+import { ActualityComponent } from './actuality.component';
 
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('ActualityComponent', () => {
+  let component: ActualityComponent;
+  let fixture: ComponentFixture<ActualityComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule
       ],
-      declarations: [HomeComponent],
+      declarations: [ActualityComponent],
       providers: [
-        QuoteService,
         MockBackend,
         BaseRequestOptions,
         {
@@ -36,7 +32,7 @@ describe('HomeComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(ActualityComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -7,10 +7,11 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ShellComponent } from './shell/shell.component';
 import { HeaderComponent } from './shell/header/header.component';
-import { FooterComponent } from './shell/footer/footer.component';
+import {FooterComponent, NgbdModalContent} from './shell/footer/footer.component';
 import { I18nService } from './i18n.service';
 import { HttpService } from './http/http.service';
 import { HttpCacheService } from './http/http-cache.service';
+import {FormsModule} from "@angular/forms";
 
 export function createHttpService(backend: ConnectionBackend,
                                   defaultOptions: RequestOptions,
@@ -24,16 +25,21 @@ export function createHttpService(backend: ConnectionBackend,
     HttpModule,
     TranslateModule,
     RouterModule,
+    FormsModule,
     NgbModule.forRoot()
   ],
   exports: [
     HeaderComponent,
     FooterComponent
   ],
+  entryComponents: [
+    NgbdModalContent
+  ],
   declarations: [
     ShellComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    NgbdModalContent
   ],
   providers: [
     I18nService,
