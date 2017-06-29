@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { ContactModule } from './contact/contact.module';
-import { LoginModule } from './login/login.module';
 import { ActualityModule } from './actuality/actuality.module';
 import {CompetitionModule} from './competition/competition.module';
 import {ClublifeModule} from './clublife/clublife.module';
@@ -29,7 +28,6 @@ import {ClublifeModule} from './clublife/clublife.module';
     CompetitionModule,
     ClublifeModule,
     ContactModule,
-    LoginModule,
     AppRoutingModule
   ],
   declarations: [AppComponent],

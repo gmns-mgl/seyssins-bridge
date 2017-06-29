@@ -7,15 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  menuHidden = true;
-
   constructor() {
   }
 
   login() {
   }
 
-  onClick() {
+  openLoginModal() {
   }
 
   ngOnInit() {
