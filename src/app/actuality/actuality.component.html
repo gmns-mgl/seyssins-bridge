@@ -12,22 +12,22 @@
     </div>
   </form>
   <div *ngIf="isAuthentificated" class="margin-top margin-bottom">
-    <button class="btn btn-primary btn-block" (click)="addActuality()" type="button">Ajouter une nouvelle actualité</button>
+    <button class="btn btn-primary btn-block" (click)="addOrEditActuality()" type="button">Ajouter une nouvelle actualité</button>
   </div>
   <div class="card margin-top" *ngFor='let actuality of actualities'>
     <img class="card-img-top" *ngIf="actuality.pictureUrl" src="actuality.pictureUrl" aria-hidden="true">
     <div class="card-block">
       <div *ngIf="isAuthentificated" class="action-buttons">
-        <button class="btn btn-outline-primary" (click)="editActuality()" type="button">
+        <button class="btn btn-outline-primary" (click)="addOrEditActuality(actuality)" type="button">
           <i class="fa fa-edit"></i>
         </button>
-        <button class="btn btn-outline-danger" (click)="deleteActuality()" type="button">
+        <button class="btn btn-outline-danger" (click)="deleteActuality(actuality)" type="button">
           <i class="fa fa-remove"></i>
         </button>
       </div>
-      <h4 class="card-title" [style.color]="actuality.titleColor">{{actuality.title}}</h4>
-      <span class="card-date">{{actuality.creationDate | date}}</span>
-      <p class="card-text">{{actuality.message}}</p>
+      <h4 class="card-title" [style.color]="actuality.color">{{actuality.title}}</h4>
+      <span class="card-date">{{actuality.createdAt | date:'longDate'}} à {{actuality.createdAt | date:'shortTime'}}</span>
+      <p class="card-text ql-editor" [innerHTML]="actuality.message | safeHtml"></p>
     </div>
   </div>
 </div>

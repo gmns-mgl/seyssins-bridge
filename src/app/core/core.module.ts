@@ -1,4 +1,4 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http, XHRBackend, ConnectionBackend, RequestOptions } from '@angular/http';
@@ -46,6 +46,7 @@ export function createHttpService(backend: ConnectionBackend,
     I18nService,
     HttpCacheService,
     AuthentificationService,
+    { provide: LOCALE_ID, useValue: "fr-FR" },
     {
       provide: Http,
       deps: [XHRBackend, RequestOptions, HttpCacheService],

@@ -1,19 +1,18 @@
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {Injectable} from '@angular/core';
+import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
-const routes = {
-  actualities: (c: ActualitiesContext) => `/api/actuality?page=${c.page}&count=${c.actualityCount}`
-};
+import * as _ from 'lodash';
+import {AuthentificationService} from "../core/authentification/authentification.service";
 
 export interface Actuality {
-  title: string;
-  titleColor: string;
-  message: string;
-  creationDate: Date;
+  _id?: string;
+  title?: string;
+  color?: string;
+  message?: string;
+  createdAt?: Date;
   pictureUrl?: string;
 }
 
@@ -24,68 +23,51 @@ export interface ActualitiesContext {
 
 @Injectable()
 export class ActualityService {
+  private static ROUTES: string = '/actualities';
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+              private authentificationService: AuthentificationService) { }
 
   getActualities(context: ActualitiesContext): Observable<Actuality[]> {
-    /*return this.http.get(routes.actualities(context))
+    let options = {
+      params: context
+    };
+    return this.http.get(ActualityService.ROUTES, options)
       .map((res: Response) => {
-        // return res.json();*/
-        return new Observable((observer) => {
-          observer.next([{
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#ff0011',
-            creationDate: new Date('2017-03-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fêtes de fin d\'année',
-            titleColor: '#548431',
-            creationDate: new Date('2017-03-01T10:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-02-01T18:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }, {
-            title: 'Fermeture exceptionnelle !',
-            titleColor: '#11e411',
-            creationDate: new Date('2017-01-01T11:00:00.000Z'),
-            message: 'La salle de bridge sera exceptionnellement fermée le mardi 27/12/2016. Tous les tournois seront annulés et reportés au 28/12/2016.'
-          }]);
-          observer.complete();
-        });
-      //});
+        return res.json();
+      });
   }
 
+  deleteActuality(actuality: Actuality): Observable<any> {
+    let header = new Headers();
+    header.set('Authorization', this.authentificationService.getToken());
+    return this.http.delete(`${ActualityService.ROUTES}/${actuality._id}`, {
+      headers: header
+    })
+      .map((res: Response) => {
+        return res.json();
+      });
+  }
+
+  updateActuality(actuality: Actuality): Observable<any> {
+    let header = new Headers();
+    header.set('Authorization', this.authentificationService.getToken());
+    return this.http.put(`${ActualityService.ROUTES}/${actuality._id}`, _.pick(actuality, ['title', 'color', 'message']),{
+      headers: header
+    })
+      .map((res: Response) => {
+        return res.json();
+      });
+  }
+
+  createActuality(actuality: Actuality): Observable<any> {
+    let header = new Headers();
+    header.set('Authorization', this.authentificationService.getToken());
+    return this.http.post(ActualityService.ROUTES, actuality, {
+      headers: header
+    })
+      .map((res: Response) => {
+        return res.json();
+      });
+  }
 }

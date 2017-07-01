@@ -8,9 +8,14 @@
   }
 }
 
+color-picker {
+  position: fixed;
+  left: 0;
+}
+
 .action-buttons {
   position: absolute;
-  top:0;
-  right:0;
+  top: 0;
+  right: 0;
   margin: 10px;
 }

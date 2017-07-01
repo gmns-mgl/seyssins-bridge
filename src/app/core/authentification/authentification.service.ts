@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
 import {Logger} from '../logger.service';
 import {HttpService} from "../http/http.service";
-import {Observable} from "rxjs/Observable";
+import {Observable, Subject, ReplaySubject} from "rxjs";
 import 'rxjs/add/operator/toPromise';
 
 const log = new Logger('HttpService');
@@ -19,6 +19,7 @@ const TOKEN_KEY = 'TOKEN_SAVED';
 export class AuthentificationService {
 
   private static ROUTE = '/auth';
+  private authentificationObserver: Subject<boolean> = new ReplaySubject(1);
 
   constructor(private httpService: Http) {
   }
@@ -33,10 +34,13 @@ export class AuthentificationService {
     return this.httpService.post(AuthentificationService.ROUTE, {
       username: username,
       password: password
-    })
+    }).map((res: Response) => res.json());
   }
 
-  isAuthentificated(): Promise<Boolean> {
+  isAuthentificated(): Promise<boolean> {
+    if (!localStorage.getItem(TOKEN_KEY)) {
+      return Promise.resolve(false);
+    }
     let header = new Headers();
     header.set('Authorization', localStorage.getItem(TOKEN_KEY));
     return this.httpService.get(AuthentificationService.ROUTE, {
@@ -44,8 +48,13 @@ export class AuthentificationService {
     }).toPromise().then(() => true, () => false);
   }
 
+  get getAuthentificationObserver(): Observable<boolean> {
+    return this.authentificationObserver.asObservable();
+  }
+
   saveToken(token: string) {
     localStorage.setItem(TOKEN_KEY, token);
+    this.authentificationObserver.next(token ? true : false);
   }
 
   getToken(): string {
@@ -54,6 +63,7 @@ export class AuthentificationService {
 
   clearToken() {
     localStorage.setItem(TOKEN_KEY, '');
+    this.authentificationObserver.next(false);
   }
 
 }

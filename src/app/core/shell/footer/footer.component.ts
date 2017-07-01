@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Response} from '@angular/http';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthentificationService} from "../../authentification/authentification.service";
@@ -41,15 +41,13 @@ export class NgbdModalContent {
 
   login(): void {
     this.authentificationService.login(this.username, this.password)
-      .subscribe((response: Response) => {
-        let token = response.json().token;
-        console.log(token);
+      .subscribe((response: any) => {
+        let token = response.token;
         this.authentificationService.saveToken(token);
         this.activeModal.close(true);
-      }, (error: Response) => {
-        let body = error.json();
+      }, (error: any) => {
         this.showError = true;
-        switch (body.code) {
+        switch (error.code) {
           case 403:
             this.errorMessage = 'Le mot de passe ne correspond pas.';
             break;
