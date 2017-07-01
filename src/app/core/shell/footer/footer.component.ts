@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Response} from '@angular/http';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AuthentificationService} from "../../authentification/authentification.service";
 
 @Component({
   selector: 'ngbd-modal-content',
@@ -19,6 +21,7 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
           <input class="form-control" type="password" name="password" placeholder="Mot de passe" [(ngModel)]="password">
         </div>
       </form>
+      <ngb-alert type="warning" *ngIf="showError" (close)="hideError()">{{ errorMessage }}</ngb-alert>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Fermer</button>
@@ -27,14 +30,41 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
   `
 })
 export class NgbdModalContent {
-  @Input() username: string;
-  @Input() password: string;
+  username: string;
+  password: string;
+  showError: boolean = false;
+  errorMessage: string;
 
-  constructor(public activeModal: NgbActiveModal) {
+  constructor(public activeModal: NgbActiveModal,
+              private authentificationService: AuthentificationService) {
   }
 
   login(): void {
-    this.activeModal.close({username: this.username, password: this.password});
+    this.authentificationService.login(this.username, this.password)
+      .subscribe((response: Response) => {
+        let token = response.json().token;
+        console.log(token);
+        this.authentificationService.saveToken(token);
+        this.activeModal.close(true);
+      }, (error: Response) => {
+        let body = error.json();
+        this.showError = true;
+        switch (body.code) {
+          case 403:
+            this.errorMessage = 'Le mot de passe ne correspond pas.';
+            break;
+          case 404:
+            this.errorMessage = 'L\'utilisateur n\'existe pas.';
+            break;
+          default:
+            this.errorMessage = 'Une erreur interne s\'est produite, contactez votre administrateur.';
+            break;
+        }
+      });
+  }
+
+  hideError() {
+    this.showError = false;
   }
 }
 
@@ -45,25 +75,29 @@ export class NgbdModalContent {
 })
 export class FooterComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) {
+  isAuthentificated: boolean = false;
+
+  constructor(private modalService: NgbModal,
+              private authentificationService: AuthentificationService) {
   }
 
   openModal() {
-    const modalRef = this.modalService.open(NgbdModalContent);
-    modalRef.componentInstance.name = 'World';
-    modalRef.result
-      .then(result => {
-        console.log(result);
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    this.modalService.open(NgbdModalContent).result
+      .then((authentificated: boolean) => {
+        this.isAuthentificated = authentificated;
+      });
   }
 
-  closeModal(id: string) {
+  disconnect() {
+    this.authentificationService.clearToken();
+    this.isAuthentificated = false;
   }
 
   ngOnInit() {
+    this.authentificationService.isAuthentificated()
+      .then((isAuthentificated: boolean) => {
+        this.isAuthentificated = isAuthentificated;
+      });
   }
 
 }

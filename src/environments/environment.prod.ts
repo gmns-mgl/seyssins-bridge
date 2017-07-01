@@ -4,7 +4,7 @@ import env from './.env.json';
 export const environment = {
   production: true,
   version: env.npm_package_version,
-  serverUrl: '/api',
+  serverUrl: 'http://club-seyssins-bridge.7e14.starter-us-west-2.openshiftapps.com/api',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',

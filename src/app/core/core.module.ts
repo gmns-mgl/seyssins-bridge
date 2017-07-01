@@ -12,6 +12,7 @@ import { I18nService } from './i18n.service';
 import { HttpService } from './http/http.service';
 import { HttpCacheService } from './http/http-cache.service';
 import {FormsModule} from "@angular/forms";
+import {AuthentificationService} from "./authentification/authentification.service";
 
 export function createHttpService(backend: ConnectionBackend,
                                   defaultOptions: RequestOptions,
@@ -44,6 +45,7 @@ export function createHttpService(backend: ConnectionBackend,
   providers: [
     I18nService,
     HttpCacheService,
+    AuthentificationService,
     {
       provide: Http,
       deps: [XHRBackend, RequestOptions, HttpCacheService],

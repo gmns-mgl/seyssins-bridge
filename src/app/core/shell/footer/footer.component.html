@@ -1,5 +1,6 @@
 <footer class="footer">
   <span>Mentions légales</span>
   <span class="hidden-sm-down">Seyssins Bridge Club &copy; 2017 Tout droit réservé</span>
-  <span (click)="openModal()">Administration du site</span>
+  <span *ngIf="!isAuthentificated" (click)="openModal()">Administration du site</span>
+  <span *ngIf="isAuthentificated" (click)="disconnect()">Mode administration activé - Déconnexion</span>
 </footer>

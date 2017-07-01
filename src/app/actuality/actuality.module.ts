@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ActualityComponent } from './actuality.component';
 import { ActualityService } from './actuality.service';
 import { ActualityRoutingModule } from './actuality-routing.module';
+import {AuthentificationService} from '../core/authentification/authentification.service';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ActualityRoutingModule } from './actuality-routing.module';
     ActualityComponent
   ],
   providers: [
-    ActualityService
+    ActualityService,
+    AuthentificationService
   ]
 })
 export class ActualityModule { }
