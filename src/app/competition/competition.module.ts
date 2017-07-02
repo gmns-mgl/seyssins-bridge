@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { CompetitionRoutingModule } from './competition-routing.module';
 import { CompetitionComponent } from './competition.component';
-import { QuoteService } from './quote.service';
+import { CompetitionService } from './competition.service';
 
 @NgModule({
   imports: [
@@ -20,7 +20,7 @@ import { QuoteService } from './quote.service';
     CompetitionComponent
   ],
   providers: [
-    QuoteService
+    CompetitionService
   ]
 })
 export class CompetitionModule { }

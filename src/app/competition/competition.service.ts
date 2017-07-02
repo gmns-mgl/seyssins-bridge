@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import {AuthentificationService} from '../core/authentification/authentification.service';
 
-export interface Actuality {
+export interface Competition {
   _id?: string;
   title?: string;
   color?: string;
@@ -16,32 +16,32 @@ export interface Actuality {
   pictureUrl?: string;
 }
 
-export interface ActualitiesContext {
+export interface CompetitionsContext {
   page: number;
-  actualityCount: number;
+  competitionCount: number;
 }
 
 @Injectable()
-export class ActualityService {
-  private static ROUTES: string = '/actualities';
+export class CompetitionService {
+  private static ROUTES: string = '/competitions';
 
   constructor(private http: Http,
               private authentificationService: AuthentificationService) { }
 
-  getActualities(context: ActualitiesContext): Observable<Actuality[]> {
+  getCompetitions(context: CompetitionsContext): Observable<Competition[]> {
     let options = {
       params: context
     };
-    return this.http.get(ActualityService.ROUTES, options)
+    return this.http.get(CompetitionService.ROUTES, options)
       .map((res: Response) => {
         return res.json();
       });
   }
 
-  deleteActuality(actuality: Actuality): Observable<any> {
+  deleteCompetition(competition: Competition): Observable<any> {
     let header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
-    return this.http.delete(`${ActualityService.ROUTES}/${actuality._id}`, {
+    return this.http.delete(`$CompetitionService.ROUTES}/${competition._id}`, {
       headers: header
     })
       .map((res: Response) => {
@@ -49,10 +49,10 @@ export class ActualityService {
       });
   }
 
-  updateActuality(actuality: Actuality): Observable<any> {
+  updateCompetition(competition: Competition): Observable<any> {
     let header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
-    return this.http.put(`${ActualityService.ROUTES}/${actuality._id}`, _.pick(actuality, ['title', 'color', 'message']),{
+    return this.http.put(`$CompetitionService.ROUTES}/${competition._id}`, _.pick(competition, ['title', 'color', 'message']),{
       headers: header
     })
       .map((res: Response) => {
@@ -60,10 +60,10 @@ export class ActualityService {
       });
   }
 
-  createActuality(actuality: Actuality): Observable<any> {
+  createCompetition(competition: Competition): Observable<any> {
     let header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
-    return this.http.post(ActualityService.ROUTES, actuality, {
+    return this.http.post(CompetitionService.ROUTES, competition, {
       headers: header
     })
       .map((res: Response) => {

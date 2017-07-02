@@ -7,7 +7,7 @@ import { MockBackend } from '@angular/http/testing';
 
 import { SharedModule } from '../shared/shared.module';
 import { ClublifeComponent } from './clublife.component';
-import { QuoteService } from './quote.service';
+import { CompetitionService } from '../competition/competition.service';
 
 describe('ClublifeComponent', () => {
   let component: ClublifeComponent;
@@ -20,7 +20,7 @@ describe('ClublifeComponent', () => {
       ],
       declarations: [ClublifeComponent],
       providers: [
-        QuoteService,
+        CompetitionService,
         MockBackend,
         BaseRequestOptions,
         {

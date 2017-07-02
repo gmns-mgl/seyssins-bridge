@@ -7,7 +7,7 @@ import { MockBackend } from '@angular/http/testing';
 
 import { SharedModule } from '../shared/shared.module';
 import { CompetitionComponent } from './competition.component';
-import { QuoteService } from './quote.service';
+import { CompetitionService } from './competition.service';
 
 describe('CompetitionComponent', () => {
   let component: CompetitionComponent;
@@ -20,7 +20,7 @@ describe('CompetitionComponent', () => {
       ],
       declarations: [CompetitionComponent],
       providers: [
-        QuoteService,
+        CompetitionService,
         MockBackend,
         BaseRequestOptions,
         {
