@@ -25,7 +25,7 @@ import {CompetitionService, Competition} from './competition.service';
     <div class="modal-body">
       <form>
         <div class="form-group">
-          <input class="form-control" type="text" name="title" placeholder="Titre"  [style.color]="competition.color" [(ngModel)]="actuality.title">
+          <input class="form-control" type="text" name="title" placeholder="Titre"  [style.color]="competition.color" [(ngModel)]="competition.title">
         </div>
         <div class="form-group" [(ngModel)]="competition.color" ngbRadioGroup name="radioBasic">
           <button *ngFor="let color of availableColors" class="btn btn-primary white-icon margin-right"

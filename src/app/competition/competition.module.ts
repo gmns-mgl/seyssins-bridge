@@ -26,6 +26,9 @@ import {AuthentificationService} from '../core/authentification/authentification
     CompetitionComponent,
     CompetitionModalContent
   ],
+  entryComponents: [
+    CompetitionModalContent
+  ],
   providers: [
     CompetitionService,
     AuthentificationService
