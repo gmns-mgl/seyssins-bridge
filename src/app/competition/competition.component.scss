@@ -1,9 +1,21 @@
-.logo {
-  width: 100px;
+@import "src/theme/theme-variables";
+
+.btn-secondary {
+  background-color: $brand-primary;
+  color: $white;
+  &:hover {
+    background-color: darken($brand-primary, 5);
+  }
 }
 
-q {
-  font-style: italic;
-  font-size: 1.2rem;
-  quotes: "« " " »";
+.has-error {
+  box-sizing: border-box;
+  border-bottom: solid 3px $brand-danger;
+}
+
+.action-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
 }

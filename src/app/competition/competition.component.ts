@@ -1,14 +1,16 @@
 import 'rxjs/add/operator/finally';
 
-import { Component, OnInit } from '@angular/core';
-
+import {Component, OnInit} from '@angular/core';
 import * as _ from 'lodash';
-
-import { CompetitionService, Competition } from './competition.service';
-import {AuthentificationService} from '../core/authentification/authentification.service';
+import {Response} from '@angular/http';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {CompetitionService, Competition} from './competition.service';
+import {AuthentificationService} from '../core/authentification/authentification.service';
 import {Util} from '../core/util.service';
 import {CompetitionModalContent} from './competition.modal.component';
+
+const EMAIL_PATTERN = /^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
 
 @Component({
   selector: 'app-competition',
@@ -18,9 +20,13 @@ import {CompetitionModalContent} from './competition.modal.component';
 export class CompetitionComponent implements OnInit {
 
 
-  competitions: Competition[];
+  competitions: Competition[] = [];
   isAuthentificated: boolean = false;
+  errorMessage: string;
+  showError: boolean = false;
+  showSuccess: boolean = false;
   isLoading: boolean;
+  email: string;
 
   constructor(private modalService: NgbModal,
               private competitionService: CompetitionService,
@@ -52,13 +58,48 @@ export class CompetitionComponent implements OnInit {
           this.competitions.unshift(competition);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   }
 
   deleteCompetition(competition: Competition): void {
     this.competitionService.deleteCompetition(competition)
       .finally(() => this.isLoading = false)
       .subscribe(() => _.remove(this.competitions, competition));
+  }
+
+  subscribe(): void {
+    this.showSuccess = false;
+    this.showError = false;
+    if (!this.email && !EMAIL_PATTERN.test(this.email)) {
+      return;
+    }
+    this.authentificationService.addUser(this.email)
+      .subscribe(() => {
+        this.showSuccess = true;
+      }, (err: Response) => {
+        switch (err.json().code) {
+          case 403:
+            this.errorMessage = 'Vous êtes déjà inscrit aux nouvelles actualités. Si vous ne recevez aucun mail, regardez dans votre dossier de spam ou contactez le webmaster.';
+            break;
+          default:
+            this.errorMessage = 'Une erreur indépendante de notre volonté s\'est produite, veuillez contactez le webmaster si elle se reproduit.';
+            break;
+        }
+        this.showError = true;
+      });
+  }
+
+  closeSuccessAlert() {
+    this.showSuccess = false;
+  }
+
+  closeErrorAlert() {
+    this.showError = false;
+  }
+
+  isEmailInvalid(): boolean {
+    return this.email && !EMAIL_PATTERN.test(this.email);
   }
 
 }
