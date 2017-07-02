@@ -14,6 +14,7 @@ import { HttpCacheService } from './http/http-cache.service';
 import {FormsModule} from "@angular/forms";
 import {AuthentificationService} from "./authentification/authentification.service";
 
+
 export function createHttpService(backend: ConnectionBackend,
                                   defaultOptions: RequestOptions,
                                   httpCacheService: HttpCacheService) {
@@ -40,8 +41,7 @@ export function createHttpService(backend: ConnectionBackend,
     ShellComponent,
     HeaderComponent,
     FooterComponent,
-    NgbdModalContent
-  ],
+    NgbdModalContent],
   providers: [
     I18nService,
     HttpCacheService,

@@ -10,7 +10,6 @@ import {ActualityComponent, ActualityModalContent} from './actuality.component';
 import { ActualityService } from './actuality.service';
 import { ActualityRoutingModule } from './actuality-routing.module';
 import {AuthentificationService} from '../core/authentification/authentification.service';
-import {SafeHtmlPipe} from "../shared/pipes/safehtml.pipe";
 
 @NgModule({
   imports: [
@@ -24,7 +23,6 @@ import {SafeHtmlPipe} from "../shared/pipes/safehtml.pipe";
   ],
   declarations: [
     ActualityComponent,
-    SafeHtmlPipe,
     ActualityModalContent
   ],
   entryComponents: [
