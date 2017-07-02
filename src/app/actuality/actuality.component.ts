@@ -49,7 +49,7 @@ import {Util} from '../core/util.service';
 export class ActualityModalContent {
   @Input() actuality: Actuality;
   showError: boolean = false;
-  availableColors = ['#000000', '#55595c', '#3D9B3D', '#d9534f', '#f0ad4e', '#5bc0de', '#5cb85c'];
+  availableColors = ['#000000', '#55595c', '#3D9B3D', '#d9534f', '#f0ad4e', '#5bc0de'];
   errorMessage: string;
   isLoading: boolean;
   toolbar: any = {
