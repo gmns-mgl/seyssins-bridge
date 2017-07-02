@@ -16,6 +16,7 @@
     "generate": "ng generate"
   },
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.0",
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
     "@angular/core": "^4.2.4",

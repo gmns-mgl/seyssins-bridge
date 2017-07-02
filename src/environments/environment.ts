@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   version: '(dev)',
   serverUrl: 'http://localhost:8080/api',
+  mapAPI: 'AIzaSyDi05pZeKWZNVfnjM1ysHMS7wNSfYXb04Y',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',

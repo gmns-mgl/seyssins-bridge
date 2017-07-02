@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { AgmCoreModule } from '@agm/core';
 
+import { environment } from '../../environments/environment';
 import { ContactRoutingModule } from './contact-routing.module';
 import { ContactComponent } from './contact.component';
 
@@ -9,7 +11,10 @@ import { ContactComponent } from './contact.component';
   imports: [
     CommonModule,
     TranslateModule,
-    ContactRoutingModule
+    ContactRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.mapAPI
+    })
   ],
   declarations: [
     ContactComponent

@@ -1,10 +1,30 @@
 <div class="container-fluid">
-  <div class="jumbotron text-center">
-    <h1>
-      <span translate>APP_NAME</span>
-    </h1>
-    <p>
-      <i class="fa fa-bookmark-o"></i> <span translate>Version</span> {{version}}
-    </p>
+  <h1 class="title">
+    <span translate>Contact</span>
+  </h1>
+  <div class="margin-top flex">
+    <agm-map [zoom]="zoom" [latitude]="lat" [longitude]="lng" class="map">
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+    <div class="contact-content">
+      <div class="address">
+        <h4>Adresse</h4>
+        <div class="margin-left">
+          Seyssins Bridge<br/>
+          Espace Victor Schoelcher<br/>
+          38180 Seyssins
+        </div>
+      </div>
+      <div class="timeshift">
+        <h4>Horaires</h4>
+        <div class="margin-left">
+          Mardi: 14h00-18h00<br/>
+          Mercredi: 09h00-12h00 14h00-17h00<br/>
+          Vendredi: 09h00-12h00 14h00-17h00<br/>
+          Samedi: 08h00-14h00<br/>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="margin-top"></div>
 </div>

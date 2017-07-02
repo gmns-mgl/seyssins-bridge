@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { environment } from '../../environments/environment';
-
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -9,7 +7,9 @@ import { environment } from '../../environments/environment';
 })
 export class ContactComponent implements OnInit {
 
-  version: string = environment.version;
+  lat: number = 45.165776;
+  lng: number = 5.689965;
+  zoom: number = 18;
 
   constructor() { }
 
