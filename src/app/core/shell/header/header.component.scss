@@ -1,5 +1,9 @@
 @import "src/theme/theme-variables";
 
+.border-top-white {
+  border-top: solid 1px $body-bg;
+}
+
 .header {
   display: flex;
   flex-direction: row;

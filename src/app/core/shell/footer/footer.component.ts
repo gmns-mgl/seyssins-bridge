@@ -7,7 +7,7 @@ import {AuthentificationService} from "../../authentification/authentification.s
   selector: 'ngbd-modal-content',
   template: `
     <div class="modal-header">
-      <h4 class="modal-title">Identification administtrateur</h4>
+      <h4 class="modal-title">Identification administrateur</h4>
       <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>

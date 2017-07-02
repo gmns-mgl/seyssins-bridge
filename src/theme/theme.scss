@@ -2,14 +2,27 @@
  * Global application theme.
  * Framework overrides and customization goes here.
  */
+$margins: 20px;
+
+body {
+  font-size: 1.2em;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 .padding-top {
-  padding-top: $navbar-padding-y;
+  padding-top: $margins;
 }
 .margin-top {
-  margin-top: $navbar-padding-y;
+  margin-top: $margins;
+}
+.margin-bottom {
+  margin-bottom: $margins;
 }
 .margin-right {
-  margin-right: $navbar-padding-x;
+  margin-right: $margins;
 }
 
 .title {
