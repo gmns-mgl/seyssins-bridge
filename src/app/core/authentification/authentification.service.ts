@@ -19,16 +19,22 @@ const TOKEN_KEY = 'TOKEN_SAVED';
 export class AuthentificationService {
 
   private static ROUTE = '/auth';
+  private static USER_ROUTE = '/add-user';
   private authentificationObserver: Subject<boolean> = new ReplaySubject(1);
 
   constructor(private httpService: Http) {
   }
 
+  addUser(email: string): Observable<any> {
+    return this.httpService.post(AuthentificationService.USER_ROUTE, {
+      email: email
+    }).map((res: Response) => res.json());
+  }
   /**
    * Performs any type of http request.
    * You can customize this method with your own extended behavior.
    */
-  login(username: string, password: string): Observable<Response> {
+  login(username: string, password: string): Observable<any> {
     log.info('user authentification...');
 
     return this.httpService.post(AuthentificationService.ROUTE, {

@@ -10,12 +10,15 @@ import {ActualityComponent, ActualityModalContent} from './actuality.component';
 import { ActualityService } from './actuality.service';
 import { ActualityRoutingModule } from './actuality-routing.module';
 import {AuthentificationService} from '../core/authentification/authentification.service';
+import {SafeHtmlPipe} from "../shared/pipes/safehtml.pipe";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     HttpModule,
+    NgbModule.forRoot(),
     TranslateModule.forChild(),
     SharedModule,
     QuillModule,
@@ -23,6 +26,7 @@ import {AuthentificationService} from '../core/authentification/authentification
   ],
   declarations: [
     ActualityComponent,
+    SafeHtmlPipe,
     ActualityModalContent
   ],
   entryComponents: [
