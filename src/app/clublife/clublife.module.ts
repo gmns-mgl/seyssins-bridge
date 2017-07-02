@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { ClublifeRoutingModule } from './clublife-routing.module';
 import { ClublifeComponent } from './clublife.component';
-import { QuoteService } from './quote.service';
 
 @NgModule({
   imports: [
@@ -19,8 +18,6 @@ import { QuoteService } from './quote.service';
   declarations: [
     ClublifeComponent
   ],
-  providers: [
-    QuoteService
-  ]
+  providers: []
 })
 export class ClublifeModule { }

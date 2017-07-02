@@ -1,3 +1,16 @@
-.fa {
-  vertical-align: middle;
+@import "src/theme/theme-variables";
+
+.loader {
+  text-align: center;
+  color: $gray-dark;
+  margin: 20px;
+
+  .fa {
+    vertical-align: middle;
+  }
+
+  .message {
+    vertical-align: middle;
+    font-size: large;
+  }
 }

@@ -14,6 +14,10 @@
   <div *ngIf="isAuthentificated" class="margin-top margin-bottom">
     <button class="btn btn-primary btn-block" (click)="addOrEditActuality()" type="button">Ajouter une nouvelle actualité</button>
   </div>
+  <app-loader [isLoading]="isLoading" message="Les données sont en cours de chargement, veuillez patienter."></app-loader>
+  <div [hidden]="isLoading || actualities.length" class="no-data">
+    <h5>Pas d'actualités</h5>
+  </div>
   <div class="card margin-top" *ngFor='let actuality of actualities'>
     <img class="card-img-top" *ngIf="actuality.pictureUrl" src="actuality.pictureUrl" aria-hidden="true">
     <div class="card-block">
