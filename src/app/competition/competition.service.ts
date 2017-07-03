@@ -41,7 +41,7 @@ export class CompetitionService {
   deleteCompetition(competition: Competition): Observable<any> {
     let header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
-    return this.http.delete(`$CompetitionService.ROUTES}/${competition._id}`, {
+    return this.http.delete(`${CompetitionService.ROUTES}/${competition._id}`, {
       headers: header
     })
       .map((res: Response) => {
@@ -52,7 +52,7 @@ export class CompetitionService {
   updateCompetition(competition: Competition): Observable<any> {
     let header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
-    return this.http.put(`$CompetitionService.ROUTES}/${competition._id}`, _.pick(competition, ['title', 'color', 'message']),{
+    return this.http.put(`${CompetitionService.ROUTES}/${competition._id}`, _.pick(competition, ['title', 'color', 'message']),{
       headers: header
     })
       .map((res: Response) => {
