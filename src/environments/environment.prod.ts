@@ -4,7 +4,7 @@ import env from './.env.json';
 export const environment = {
   production: true,
   version: env.npm_package_version,
-  serverUrl: 'http://club-seyssins-bridge.7e14.starter-us-west-2.openshiftapps.com/api',
+  serverUrl: 'https://tranquil-falls-51950.herokuapp.com/api',
   mapAPI: 'AIzaSyC0A5qHEGVF-gHuk6VmXRHjkaue12H6EsM',
   defaultLanguage: 'en-US',
   supportedLanguages: [
