@@ -4,6 +4,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { QuillModule } from 'ngx-quill';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { SharedModule } from '../shared/shared.module';
 import {ActualityComponent, ActualityModalContent} from './actuality.component';
@@ -16,6 +17,7 @@ import {AuthentificationService} from '../core/authentification/authentification
     CommonModule,
     FormsModule,
     HttpModule,
+    NgbModule.forRoot(),
     TranslateModule.forChild(),
     SharedModule,
     QuillModule,

@@ -8,9 +8,9 @@
   }
 }
 
-color-picker {
-  position: fixed;
-  left: 0;
+.has-error {
+  box-sizing: border-box;
+  border-bottom: solid 3px $brand-danger;
 }
 
 .action-buttons {

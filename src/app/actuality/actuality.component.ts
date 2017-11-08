@@ -2,6 +2,7 @@ import 'rxjs/add/operator/finally';
 
 import {Component, Input, OnInit} from '@angular/core';
 import * as _ from 'lodash';
+import {Response} from '@angular/http';
 
 import {ActualityService, Actuality} from './actuality.service';
 import {AuthentificationService} from '../core/authentification/authentification.service';
@@ -39,10 +40,11 @@ import {Util} from '../core/util.service';
           <quill-editor name="message" [modules]="toolbar" [(ngModel)]="actuality.message"></quill-editor>
         </div>
       </form>
+      <ngb-alert *ngIf="showError" type="warning" (close)="hideError()">Une erreur a eu lieu lors de la sauvegarde. Veuillez rééssayer plus tard ou contactez le webmaster.</ngb-alert>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Fermer</button>
-      <button type="submit" class="btn btn-primary" (click)="save()">{{actuality._id ? 'Editer' : 'Créer'}}</button>
+      <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="!actuality.title || !actuality.message">{{actuality._id ? 'Editer' : 'Créer'}}</button>
     </div>
   `
 })
@@ -90,6 +92,8 @@ export class ActualityModalContent {
   }
 }
 
+const EMAIL_PATTERN = /^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
+
 @Component({
   selector: 'app-home',
   templateUrl: 'actuality.component.html',
@@ -99,7 +103,11 @@ export class ActualityComponent implements OnInit {
 
   actualities: Actuality[];
   isAuthentificated: boolean = false;
+  errorMessage: string;
+  showError: boolean = false;
+  showSuccess: boolean = false;
   isLoading: boolean;
+  email: string;
 
   constructor(private modalService: NgbModal,
               private actualityService: ActualityService,
@@ -140,4 +148,37 @@ export class ActualityComponent implements OnInit {
       .subscribe(() => _.remove(this.actualities, actuality));
   }
 
+  subscribe(): void {
+    this.showSuccess = false;
+    this.showError = false;
+    if (!this.email && !EMAIL_PATTERN.test(this.email)) {
+      return;
+    }
+    this.authentificationService.addUser(this.email)
+      .subscribe(() => {
+        this.showSuccess = true;
+      }, (err: Response) => {
+        switch (err.json().code) {
+          case 403:
+            this.errorMessage = 'Vous êtes déjà inscrit aux nouvelles actualités. Si vous ne recevez aucun mail, regardez dans votre dossier de spam ou contactez le webmaster.';
+            break;
+          default:
+            this.errorMessage = 'Une erreur indépendante de notre volonté s\'est produite, veuillez contactez le webmaster si elle se reproduit.';
+            break;
+        }
+        this.showError = true;
+      });
+  }
+
+  closeSuccessAlert() {
+    this.showSuccess = false;
+  }
+
+  closeErrorAlert() {
+    this.showError = false;
+  }
+
+  isEmailInvalid(): boolean {
+    return this.email && !EMAIL_PATTERN.test(this.email);
+  }
 }
