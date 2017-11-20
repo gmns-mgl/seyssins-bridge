@@ -6,7 +6,7 @@ import {Response} from '@angular/http';
 
 import {ActualityService, Actuality} from './actuality.service';
 import {AuthentificationService} from '../core/authentification/authentification.service';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Util} from '../core/util.service';
 
 @Component({
@@ -162,8 +162,11 @@ export class ActualityComponent implements OnInit {
           case 403:
             this.errorMessage = 'Vous êtes déjà inscrit aux nouvelles actualités. Si vous ne recevez aucun mail, regardez dans votre dossier de spam ou contactez le webmaster.';
             break;
+          case 401:
+            this.errorMessage = 'Votre email ne correspond pas à un email valide (il s\'agit d\'une boîte de réception temporaire).';
+            break;
           default:
-            this.errorMessage = 'Une erreur indépendante de notre volonté s\'est produite, veuillez contactez le webmaster si elle se reproduit.';
+            this.errorMessage = 'Si vous vous êtes désinscrit par erreur, contactez le webmaster pour vous réinscrire manuellement.';
             break;
         }
         this.showError = true;
