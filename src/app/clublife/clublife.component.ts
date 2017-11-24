@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/mergeMap';
 
 import {Component, Input, OnInit} from '@angular/core';
 import * as _ from 'lodash';
@@ -28,7 +29,8 @@ import {Util} from '../core/util.service';
     <div class="modal-body">
       <form>
         <div class="form-group">
-          <input class="form-control" type="text" name="title" placeholder="Titre"  [style.color]="clublife.color" [(ngModel)]="clublife.title">
+          <input class="form-control" type="text" name="title" placeholder="Titre" [style.color]="clublife.color"
+                 [(ngModel)]="clublife.title">
         </div>
         <div class="form-group" [(ngModel)]="clublife.color" ngbRadioGroup name="radioBasic">
           <button *ngFor="let color of availableColors" class="btn btn-primary white-icon margin-right"
@@ -39,29 +41,35 @@ import {Util} from '../core/util.service';
         <div class="form-group">
           <quill-editor name="message" [modules]="toolbar" [(ngModel)]="clublife.message"></quill-editor>
         </div>
+        <input type="file" (change)="prepareFileUpload($event)" accept="application/pdf">
       </form>
-      <ngb-alert *ngIf="showError" type="warning" (close)="hideError()">Une erreur a eu lieu lors de la sauvegarde. Veuillez rééssayer plus tard ou contactez le webmaster.</ngb-alert>
+      <ngb-alert *ngIf="showError" type="warning" (close)="hideError()">Une erreur a eu lieu lors de la sauvegarde.
+        Veuillez rééssayer plus tard ou contactez le webmaster.
+      </ngb-alert>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Fermer</button>
-      <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="!clublife.title || !clublife.message">{{clublife._id ? 'Editer' : 'Créer'}}</button>
+      <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="!clublife.title || !clublife.message">
+        {{clublife._id ? 'Editer' : 'Créer'}}
+      </button>
     </div>
   `
 })
 export class ClublifeModalContent {
   @Input() clublife: Clublife;
-  showError: boolean = false;
+  file: any;
+  showError = false;
   availableColors = ['#000000', '#55595c', '#3D9B3D', '#d9534f', '#f0ad4e', '#5bc0de'];
   errorMessage: string;
   isLoading: boolean;
   toolbar: any = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
-      [{ 'size': ['small', false, 'large'] }],
-      [{ 'color': [] }],
-      [{ 'align': [] }],
-      [{ 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }]
+      [{'size': ['small', false, 'large']}],
+      [{'color': []}],
+      [{'align': []}],
+      [{'list': 'bullet'}],
+      [{'indent': '-1'}, {'indent': '+1'}]
     ]
   };
 
@@ -78,13 +86,25 @@ export class ClublifeModalContent {
     } else {
       observer = this.clublifeService.createClublife(this.clublife);
     }
-    observer.finally(() => this.isLoading = false)
+    observer
+      .flatMap((clublife: any) => {
+        if (!this.file) {
+          return Promise.resolve(clublife);
+        }
+        return this.clublifeService.uploadFile(clublife, this.file);
+      })
+      .finally(() => this.isLoading = false)
       .subscribe((clublife: Clublife) => {
         this.activeModal.close(clublife);
       }, () => {
         this.showError = true;
-        this.errorMessage = 'Impossible de poursuivre';
+        this.errorMessage = 'Impossible de créer le billet.';
       });
+  }
+
+  prepareFileUpload(event: any): void {
+    console.log('File event received', event);
+    this.file = event.srcElement.files[0];
   }
 
   hideError() {
@@ -102,10 +122,10 @@ const EMAIL_PATTERN = /^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
 export class ClublifeComponent implements OnInit {
 
   clublife: Clublife[];
-  isAuthentificated: boolean = false;
+  isAuthentificated = false;
   errorMessage: string;
-  showError: boolean = false;
-  showSuccess: boolean = false;
+  showError = false;
+  showSuccess = false;
   isLoading: boolean;
   email: string;
 
@@ -139,13 +159,26 @@ export class ClublifeComponent implements OnInit {
           this.clublife.unshift(clublifeResult);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   }
 
   deleteClublife(cl: Clublife): void {
+    this.isLoading = true;
     this.clublifeService.deleteClublife(cl)
       .finally(() => this.isLoading = false)
       .subscribe(() => _.remove(this.clublife, cl));
+  }
+
+  downloadFile(cl: Clublife): void {
+    this.isLoading = true;
+    this.clublifeService.downloadFile(cl)
+      .finally(() => this.isLoading = false)
+      .subscribe((url: string) => {
+        console.log(`Retrieved url ${url}`);
+        window.location.href = url;
+      });
+
   }
 
   subscribe(): void {
@@ -160,13 +193,16 @@ export class ClublifeComponent implements OnInit {
       }, (err: Response) => {
         switch (err.json().code) {
           case 403:
-            this.errorMessage = 'Vous êtes déjà inscrit aux nouvelles informations de la vie du club. Si vous ne recevez aucun mail, regardez dans votre dossier de spam ou contactez le webmaster.';
+            this.errorMessage = `Vous êtes déjà inscrit aux nouvelles informations de la vie du club. 
+            Si vous ne recevez aucun mail, regardez dans votre dossier de spam ou contactez le webmaster.`;
             break;
           case 401:
-            this.errorMessage = 'Votre email ne correspond pas à un email valide (il s\'agit d\'une boîte de réception temporaire).';
+            this.errorMessage = `Votre email ne correspond pas à un email valide 
+            (il s\'agit d\'une boîte de réception temporaire).`;
             break;
           default:
-            this.errorMessage = 'Si vous vous êtes désinscrit par erreur, contactez le webmaster pour vous réinscrire manuellement.';
+            this.errorMessage = `Si vous vous êtes désinscrit par erreur, 
+            contactez le webmaster pour vous réinscrire manuellement.`;
             break;
         }
         this.showError = true;

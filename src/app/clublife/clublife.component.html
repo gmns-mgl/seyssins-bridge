@@ -10,11 +10,14 @@
           <input name="email" class="form-control" placeholder="Votre email" [(ngModel)]="email"
                  [ngClass]="{'has-error': isEmailInvalid()}">
           <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button" (click)="subscribe()" [disabled]="!email || isEmailInvalid()">S'inscrire</button>
+            <button class="btn btn-secondary" type="button" (click)="subscribe()"
+                    [disabled]="!email || isEmailInvalid()">S'inscrire</button>
           </span>
         </div>
         <ngb-alert *ngIf="showError" type="danger" (close)="closeErrorAlert()">{{ errorMessage }}</ngb-alert>
-        <ngb-alert *ngIf="showSuccess" type="success" (close)="closeSuccessAlert()">Votre email a bien été ajouté à la liste de notifications.</ngb-alert>
+        <ngb-alert *ngIf="showSuccess" type="success" (close)="closeSuccessAlert()">Votre email a bien été ajouté à la
+          liste de notifications.
+        </ngb-alert>
       </div>
     </form>
   </div>
@@ -43,6 +46,12 @@
       <span
         class="card-date">{{cl.createdAt | date:'longDate'}} à {{cl.createdAt | date:'shortTime'}}</span>
       <p class="card-text ql-editor" [innerHTML]="cl.message | safeHtml"></p>
+      <div *ngIf="cl.dropboxPath">
+        <button class="btn btn-info" (click)="downloadFile(cl)" type="button">
+          <i class="fa fa-download"></i>
+          <span>Télécharger le document</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

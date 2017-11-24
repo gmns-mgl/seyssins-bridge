@@ -14,6 +14,7 @@ export interface Clublife {
   message?: string;
   createdAt?: Date;
   pictureUrl?: string;
+  dropboxPath?: string;
 }
 
 export interface ClublifeContext {
@@ -39,7 +40,7 @@ export class ClublifeService {
       });
   }
 
-  deleteClublife(clublife: Clublife): Observable<any> {
+  deleteClublife(clublife: Clublife): Observable<Clublife> {
     const header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
     return this.http.delete(`${ClublifeService.ROUTES}/${clublife._id}`, {
@@ -50,7 +51,7 @@ export class ClublifeService {
       });
   }
 
-  updateClublife(clublife: Clublife): Observable<any> {
+  updateClublife(clublife: Clublife): Observable<Clublife> {
     const header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
     return this.http.put(`${ClublifeService.ROUTES}/${clublife._id}`,
@@ -63,7 +64,7 @@ export class ClublifeService {
       });
   }
 
-  createClublife(clublife: Clublife): Observable<any> {
+  createClublife(clublife: Clublife): Observable<Clublife> {
     const header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
     return this.http.post(ClublifeService.ROUTES, clublife, {
@@ -71,6 +72,26 @@ export class ClublifeService {
     })
       .map((res: Response) => {
         return res.json();
+      });
+  }
+
+  uploadFile(clublife: Clublife, file: any): Observable<Clublife> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const header = new Headers();
+    header.set('Authorization', this.authentificationService.getToken());
+    header.delete('Content-Type');
+    return this.http.post(`${ClublifeService.ROUTES}/${clublife._id}/file`, formData, {
+      headers: header
+    }).map((fileRes: Response) => {
+      return fileRes.json();
+    });
+  }
+
+  downloadFile(clublife: Clublife): Observable<any> {
+    return this.http.get(`${ClublifeService.ROUTES}/${clublife._id}/file`)
+      .map((fileRes: Response) => {
+        return fileRes.json().url;
       });
   }
 }
