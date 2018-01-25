@@ -40,6 +40,10 @@ body {
   font-style: italic;
 }
 
+.card-text {
+  height: auto;
+}
+
 .no-data {
   text-align: center;
   color: $gray-light;
