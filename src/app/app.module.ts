@@ -13,7 +13,6 @@ import { SharedModule } from './shared/shared.module';
 import { ContactModule } from './contact/contact.module';
 import { ActualityModule } from './actuality/actuality.module';
 import {CompetitionModule} from './competition/competition.module';
-import {ClublifeModule} from './clublife/clublife.module';
 
 @NgModule({
   imports: [
@@ -26,7 +25,6 @@ import {ClublifeModule} from './clublife/clublife.module';
     SharedModule,
     ActualityModule,
     CompetitionModule,
-    ClublifeModule,
     ContactModule,
     AppRoutingModule
   ],

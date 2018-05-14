@@ -29,7 +29,7 @@ export class ActualityService {
               private authentificationService: AuthentificationService) { }
 
   getActualities(context: ActualitiesContext): Observable<Actuality[]> {
-    let options = {
+    const options = {
       params: context
     };
     return this.http.get(ActualityService.ROUTES, options)
@@ -39,7 +39,7 @@ export class ActualityService {
   }
 
   deleteActuality(actuality: Actuality): Observable<any> {
-    let header = new Headers();
+    const header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
     return this.http.delete(`${ActualityService.ROUTES}/${actuality._id}`, {
       headers: header
@@ -50,7 +50,7 @@ export class ActualityService {
   }
 
   updateActuality(actuality: Actuality): Observable<any> {
-    let header = new Headers();
+    const header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
     return this.http.put(`${ActualityService.ROUTES}/${actuality._id}`, _.pick(actuality, ['title', 'color', 'message']),{
       headers: header
@@ -61,13 +61,33 @@ export class ActualityService {
   }
 
   createActuality(actuality: Actuality): Observable<any> {
-    let header = new Headers();
+    const header = new Headers();
     header.set('Authorization', this.authentificationService.getToken());
     return this.http.post(ActualityService.ROUTES, actuality, {
       headers: header
     })
       .map((res: Response) => {
         return res.json();
+      });
+  }
+
+  uploadFile(actuality: Actuality, file: any): Observable<Actuality> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const header = new Headers();
+    header.set('Authorization', this.authentificationService.getToken());
+    header.delete('Content-Type');
+    return this.http.post(`${ActualityService.ROUTES}/${actuality._id}/file`, formData, {
+      headers: header
+    }).map((fileRes: Response) => {
+      return fileRes.json();
+    });
+  }
+
+  downloadFile(actuality: Actuality): Observable<any> {
+    return this.http.get(`${ActualityService.ROUTES}/${actuality._id}/file`)
+      .map((fileRes: Response) => {
+        return fileRes.json().url;
       });
   }
 }

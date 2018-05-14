@@ -43,6 +43,12 @@
       <span
         class="card-date">{{actuality.createdAt | date:'longDate'}} à {{actuality.createdAt | date:'shortTime'}}</span>
       <p class="card-text ql-editor" [innerHTML]="actuality.message | safeHtml"></p>
+      <div *ngIf="actuality.dropboxPath">
+        <button class="btn btn-info" (click)="downloadFile(actuality)" type="button">
+          <i class="fa fa-download"></i>
+          <span>Télécharger le document</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

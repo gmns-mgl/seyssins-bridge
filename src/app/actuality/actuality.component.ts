@@ -28,7 +28,8 @@ import {Util} from '../core/util.service';
     <div class="modal-body">
       <form>
         <div class="form-group">
-          <input class="form-control" type="text" name="title" placeholder="Titre"  [style.color]="actuality.color" [(ngModel)]="actuality.title">
+          <input class="form-control" type="text" name="title" placeholder="Titre" [style.color]="actuality.color"
+                 [(ngModel)]="actuality.title">
         </div>
         <div class="form-group" [(ngModel)]="actuality.color" ngbRadioGroup name="radioBasic">
           <button *ngFor="let color of availableColors" class="btn btn-primary white-icon margin-right"
@@ -39,17 +40,23 @@ import {Util} from '../core/util.service';
         <div class="form-group">
           <quill-editor name="message" [modules]="toolbar" [(ngModel)]="actuality.message"></quill-editor>
         </div>
+        <input type="file" (change)="prepareFileUpload($event)" accept="application/pdf">
       </form>
-      <ngb-alert *ngIf="showError" type="warning" (close)="hideError()">Une erreur a eu lieu lors de la sauvegarde. Veuillez rééssayer plus tard ou contactez le webmaster.</ngb-alert>
+      <ngb-alert *ngIf="showError" type="warning" (close)="hideError()">Une erreur a eu lieu lors de la sauvegarde.
+        Veuillez rééssayer plus tard ou contactez le webmaster.
+      </ngb-alert>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Fermer</button>
-      <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="!actuality.title || !actuality.message">{{actuality._id ? 'Editer' : 'Créer'}}</button>
+      <button type="submit" class="btn btn-primary" (click)="save()"
+              [disabled]="!actuality.title || !actuality.message">{{actuality._id ? 'Editer' : 'Créer'}}
+      </button>
     </div>
   `
 })
 export class ActualityModalContent {
   @Input() actuality: Actuality;
+  file: any;
   showError: boolean = false;
   availableColors = ['#000000', '#55595c', '#3D9B3D', '#d9534f', '#f0ad4e', '#5bc0de'];
   errorMessage: string;
@@ -57,11 +64,11 @@ export class ActualityModalContent {
   toolbar: any = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
-      [{ 'size': ['small', false, 'large'] }],
-      [{ 'color': [] }],
-      [{ 'align': [] }],
-      [{ 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }]
+      [{'size': ['small', false, 'large']}],
+      [{'color': []}],
+      [{'align': []}],
+      [{'list': 'bullet'}],
+      [{'indent': '-1'}, {'indent': '+1'}]
     ]
   };
 
@@ -78,13 +85,25 @@ export class ActualityModalContent {
     } else {
       observer = this.actualityService.createActuality(this.actuality);
     }
-    observer.finally(() => this.isLoading = false)
+    observer
+      .flatMap((actuality: any) => {
+        if (!this.file) {
+          return Promise.resolve(actuality);
+        }
+        return this.actualityService.uploadFile(actuality, this.file);
+      })
+      .finally(() => this.isLoading = false)
       .subscribe((actuality: Actuality) => {
         this.activeModal.close(actuality);
       }, () => {
         this.showError = true;
         this.errorMessage = 'Impossible de poursuivre';
       });
+  }
+
+  prepareFileUpload(event: any): void {
+    console.log('File event received', event);
+    this.file = event.srcElement.files[0];
   }
 
   hideError() {
@@ -139,13 +158,25 @@ export class ActualityComponent implements OnInit {
           this.actualities.unshift(actuality);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   }
 
   deleteActuality(actuality: Actuality): void {
     this.actualityService.deleteActuality(actuality)
       .finally(() => this.isLoading = false)
       .subscribe(() => _.remove(this.actualities, actuality));
+  }
+
+  downloadFile(actuality: Actuality): void {
+    this.isLoading = true;
+    this.actualityService.downloadFile(actuality)
+      .finally(() => this.isLoading = false)
+      .subscribe((url: string) => {
+        console.log(`Retrieved url ${url}`);
+        window.location.href = url;
+      });
+
   }
 
   subscribe(): void {
